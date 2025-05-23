@@ -1,0 +1,54 @@
+name: Actions
+
+on:
+ push:
+  branches: [master]
+ pull_request:
+  branches: [master]
+  
+permissions:
+  contents: write
+
+jobs: 
+ build_Linux:
+
+  runs-on: ubuntu-latest
+
+  steps:
+  - uses: actions/checkout@v4
+
+  - name: putting gtest
+    run: git clone https://github.com/google/googletest.git third-party/gtest
+  
+  - name: Configurate
+    run: |
+      rm -rf ${{github.workspace}}/_build
+      mkdir _build && cd _build
+      cmake .. -DBUILD_TESTS=ON
+      cmake --build .
+
+  - name: exe_file
+    run: ${{github.workspace}}/_build/chat_room
+
+  - name: Run tests
+    run: ${{github.workspace}}/_build/my_test
+
+  - name: package
+    run: cmake --build ${{github.workspace}}/_build --target package
+
+  - name: package_source
+    run: cmake --build ${{github.workspace}}/_build --target package_source
+
+  - name: Make a release
+    uses: ncipollo/release-action@v1
+    with:
+      artifacts: "${{github.workspace}}/_build/*.deb,${{github.workspace}}/_build/*.tar.gz,${{github.workspace}}/_build/*.zip"
+      tag: 1.0.0
+      token: ${{ secrets.GITHUB_TOKEN }}
+      allowUpdates: true
+
+  - name: Arts
+    uses: actions/upload-artifact@v4
+    with:
+        name: chat_room
+        path: ${{github.workspace}}/_build/chat_room

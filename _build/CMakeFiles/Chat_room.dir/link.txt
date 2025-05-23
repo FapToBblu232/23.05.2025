@@ -1,0 +1,2 @@
+/usr/bin/ar qc libChat_room.a CMakeFiles/Chat_room.dir/source/main.cpp.o CMakeFiles/Chat_room.dir/source/chat_room.cpp.o
+/usr/bin/ranlib libChat_room.a

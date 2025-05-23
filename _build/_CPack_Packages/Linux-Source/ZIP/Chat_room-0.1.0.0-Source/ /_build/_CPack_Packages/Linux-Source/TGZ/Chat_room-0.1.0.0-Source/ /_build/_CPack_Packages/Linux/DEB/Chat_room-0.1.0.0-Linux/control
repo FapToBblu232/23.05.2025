@@ -1,0 +1,10 @@
+Architecture: all
+Description: Rk2
+ Will it work?
+Maintainer: BridgeInSky
+Package: rk2-dev
+Priority: optional
+Section: devel
+Version: 0.1.0.0-1
+Installed-Size: 4862
+
